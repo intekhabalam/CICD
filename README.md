@@ -1,2 +1,3 @@
-# CICD
-CICD work
+# maven-project
+
+Simple Maven Project
