@@ -2,8 +2,11 @@
 Objective:
 
 This document details the implementation steps of CICD pipeline using a Ansible Playbook, Infra monitoring, app/service monitoring, Nginx Containerization and ELK (Log monitoring etc).
+
 Purpose:
+
 By following this repository we can able to setup a DevOps CI/CD Pipeline.
+
 git
 Jenkins
 Maven
@@ -34,7 +37,7 @@ Logged into the docker hub using “docker login” command.
 Made a Dockerfile as below: Please ignore the # in that. It is just for understanding. Exposed the port 9000 as per the requirement.
 
 
-========================
+
 FROM ubuntu:18.04
 
 
@@ -61,7 +64,7 @@ CMD ["nginx"]
 
 # Expose ports.
 EXPOSE 9000
-======================
+
 
 
 Docker file is created. Here is the command used to build an image.
@@ -73,10 +76,13 @@ sudo docker build -t alam1988/nginx_1.1 .
 Images has been created now:
 
 
+
 root@ip-172-17-2-6:/opt/deploy/myapp# docker images
+
 REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
 alam1988/nginx_1.1   latest              ac8047a56d76        29 minutes ago      124MB
 ubuntu               18.04               775349758637        2 weeks ago         64.2MB
+
 
 
 Command to create a docker container using the created images and expose port 9000.
@@ -88,11 +94,12 @@ sudo docker run -d -p 9000:80 --name=alam alam1988/nginx_1.1
 Nginx container has been created now and running on port 9000.
 
 
-==================
+
 root@ip-172-17-2-6:/opt/deploy/myapp# docker ps
+
 CONTAINER ID        IMAGE                COMMAND             CREATED             STATUS              PORTS                            NAMES
 e2ac3e46b77d        alam1988/nginx_1.1   "nginx"             29 minutes ago      Up 29 minutes       9000/tcp, 0.0.0.0:9000->80/tcp   alam
-==================
+
 
 
 Now let's start CICD work.
@@ -128,18 +135,16 @@ We will be using open java for our demo, Get the latest version from http://open
 yum install java-1.8*
 
 #yum -y install java-1.8.0-openjdk
-
 Confirm Java Version and set the java home
 java -version
 find /usr/lib/jvm/java-1.8* | head -n 3
 JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.212.b04-1.el8_0.x86_64
-
 export JAVA_HOME
 PATH=$PATH:$JAVA_HOME
-
  # To set it permanently update your .bash_profile
 vi ~/.bash_profile
-The output should be something like this,
+
+The output should be something like this.
 
 [root@~]# java -version
 openjdk version "1.8.0_151"
@@ -149,18 +154,21 @@ OpenJDK 64-Bit Server VM (build 25.151-b12, mixed mode)
 Install Jenkins
 
 We can install jenkins using the rpm or by setting up the repo. We will set up the repo so that we can update it easily in the future.
-
 yum -y install wget
+
 sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
 sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
 yum -y install jenkins
 
 Start Jenkins
+
 # Start jenkins service
 service jenkins start
  
 # Setup Jenkins to start at boot,
 chkconfig jenkins on
+
 Configure Git pulgin on Jenkins
 
 Installed git packages on jenkins server
@@ -264,6 +272,10 @@ Playbooks:
   - name: remove docker images from ansible server 
     command: docker rmi simple-devops-image alam1988/simple-devops-image
     ignore_errors: yes
+
+
+
+
 
 
 2)
@@ -391,6 +403,13 @@ The following steps are to be performed on all the three nodes. Except step 7.
 
 
 
+
+
+
+
+
+
+
 {
 "bootstrap_expect": 3,
 "client_addr": "0.0.0.0",
@@ -460,15 +479,12 @@ Access the econsul web UI using the following syntax in your browser.
 
 http://consul-ip:8500/ui
 
-You can view an UI as shown below.
-
-
       
-I have already configured sensu in one of my server, so I just added the sensu agent in my client machine to monitor the infra, ie; memory, cpu, disk usage, etc.
+I have already configured sensu in one of my server, so I just added the sensu agent in my client machine to monitor the infra, ie; memory, cpu, disk usage, etc. Please check the screenshot.
 
 
 
-I have also configured ELK to see the logs from clinet mahcine to Kibana UI and users visualize data with charts and graphs in Kibana.
+I have also configured ELK to see the logs from clinet mahcine to Kibana UI and users visualize data with charts and graphs in Kibana. Please check the below.
 
 
 
