@@ -73,12 +73,10 @@ sudo docker build -t alam1988/nginx_1.1 .
 Images has been created now:
 
 
-============
 root@ip-172-17-2-6:/opt/deploy/myapp# docker images
 REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
 alam1988/nginx_1.1   latest              ac8047a56d76        29 minutes ago      124MB
 ubuntu               18.04               775349758637        2 weeks ago         64.2MB
-============
 
 
 Command to create a docker container using the created images and expose port 9000.
